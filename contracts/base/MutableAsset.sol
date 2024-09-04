@@ -35,11 +35,6 @@ abstract contract MutableAsset {
         creatorSmartPolicy = _creatorSmartPolicy;
     }
 
-    event OwnershipTransferred(
-        address indexed previousOwner,
-        address indexed newOwner
-    );
-
     function setTokenURI(string memory _tokenUri) internal virtual {
         tokenURI = _tokenUri;
     }

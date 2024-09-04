@@ -18,18 +18,14 @@ contract EventTicketMutableAsset is MutableAsset {
         address _holderSmartPolicy
     ) MutableAsset(_nmt, _creatorSmartPolicy, _holderSmartPolicy) {}
 
-
-    address virtualSwagBagNFT;
-    address eventNFT;
-
     //EventTicket descriptor
     struct EventTicketDescriptor {
-        uint256 eventItem;  // represents the tokenId of the event
-        uint256 virtualSwagBag;  // represents the tokenId of of the virtual swag bag
-        uint256 seatNumber; 
-        uint256 expireDate;
+        uint256 eventItem; // represents the tokenId of the event
+        uint256 virtualSwagBag; // represents the tokenId of of the virtual swag bag
+        uint256 seatNumber;
+        // uint256 expireDate;
         uint256 validationDate;
-        bool virtualSwagBagAccess; // 
+        bool virtualSwagBagAccess; //
         bool backstageAccess;
     }
 
@@ -56,7 +52,6 @@ contract EventTicketMutableAsset is MutableAsset {
 
     fallback() external {}
 
-
     function setBackstageAccess(
         bool _backstageAccess,
         string memory _tokenURI
@@ -72,18 +67,21 @@ contract EventTicketMutableAsset is MutableAsset {
             address(this)
         )
     {
-        _setBackstageAccess(_backstageAccess, _tokenURI);
-    }
-
-    // Public only for evaluating costs
-    function _setBackstageAccess(
-        bool _backstageAccess,
-        string memory _tokenURI
-    ) public {
+        // _setBackstageAccess(_backstageAccess, _tokenURI);
         eventTicketDescriptor.backstageAccess = _backstageAccess;
         setTokenURI(_tokenURI);
         emit StateChanged(eventTicketDescriptor);
     }
+
+    // // Public only for evaluating costs
+    // function _setBackstageAccess(
+    //     bool _backstageAccess,
+    //     string memory _tokenURI
+    // ) public {
+    //     eventTicketDescriptor.backstageAccess = _backstageAccess;
+    //     setTokenURI(_tokenURI);
+    //     emit StateChanged(eventTicketDescriptor);
+    // }
 
     function setSeat(
         uint256 _seatNumber,
@@ -100,18 +98,21 @@ contract EventTicketMutableAsset is MutableAsset {
             address(this)
         )
     {
-        _setSeat(_seatNumber, _tokenURI);
-    }
-
-    // Public only for evaluating costs
-    function _setSeat(
-        uint256 _seatNumber,
-        string memory _tokenURI
-    ) public {
+        // _setSeat(_seatNumber, _tokenURI);
         eventTicketDescriptor.seatNumber = _seatNumber;
         setTokenURI(_tokenURI);
         emit StateChanged(eventTicketDescriptor);
     }
+
+    // // Public only for evaluating costs
+    // function _setSeat(
+    //     uint256 _seatNumber,
+    //     string memory _tokenURI
+    // ) public {
+    //     eventTicketDescriptor.seatNumber = _seatNumber;
+    //     setTokenURI(_tokenURI);
+    //     emit StateChanged(eventTicketDescriptor);
+    // }
 
     function setValidationDate(
         uint256 _validationDate,
@@ -128,19 +129,21 @@ contract EventTicketMutableAsset is MutableAsset {
             address(this)
         )
     {
-        _setValidationDate(_validationDate, _tokenURI);
-    }
-
-    // Public only for evaluating costs
-    function _setValidationDate(
-        uint256 _validationDate,
-        string memory _tokenURI
-    ) public {
+        // _setValidationDate(_validationDate, _tokenURI);
         eventTicketDescriptor.validationDate = _validationDate;
         setTokenURI(_tokenURI);
         emit StateChanged(eventTicketDescriptor);
     }
 
+    // // Public only for evaluating costs
+    // function _setValidationDate(
+    //     uint256 _validationDate,
+    //     string memory _tokenURI
+    // ) public {
+    //     eventTicketDescriptor.validationDate = _validationDate;
+    //     setTokenURI(_tokenURI);
+    //     emit StateChanged(eventTicketDescriptor);
+    // }
 
     function setVirtualSwagBagAccess(
         bool _virtualSwagBagAccess,
@@ -157,19 +160,21 @@ contract EventTicketMutableAsset is MutableAsset {
             address(this)
         )
     {
-        _setVirtualSwagBagAccess(_virtualSwagBagAccess, _tokenURI);
-    }
-
-    // Public only for evaluating costs
-    function _setVirtualSwagBagAccess(
-        bool _virtualSwagBagAccess,
-        string memory _tokenURI
-    ) public {
+        // _setVirtualSwagBagAccess(_virtualSwagBagAccess, _tokenURI);
         eventTicketDescriptor.virtualSwagBagAccess = _virtualSwagBagAccess;
         setTokenURI(_tokenURI);
         emit StateChanged(eventTicketDescriptor);
     }
 
+    // // Public only for evaluating costs
+    // function _setVirtualSwagBagAccess(
+    //     bool _virtualSwagBagAccess,
+    //     string memory _tokenURI
+    // ) public {
+    //     eventTicketDescriptor.virtualSwagBagAccess = _virtualSwagBagAccess;
+    //     setTokenURI(_tokenURI);
+    //     emit StateChanged(eventTicketDescriptor);
+    // }
 
     function setVirtualSwagBag(
         uint256 _virtualSwagBagTokenId,
@@ -186,16 +191,19 @@ contract EventTicketMutableAsset is MutableAsset {
             address(this)
         )
     {
-        _setVirtualSwagBag(_virtualSwagBagTokenId, _tokenURI);
-    }
-
-    // Public only for evaluating costs
-    function _setVirtualSwagBag(
-        uint256 _virtualSwagBagTokenId,
-        string memory _tokenURI
-    ) public {
+        // _setVirtualSwagBag(_virtualSwagBagTokenId, _tokenURI);
         eventTicketDescriptor.virtualSwagBag = _virtualSwagBagTokenId;
         setTokenURI(_tokenURI);
         emit StateChanged(eventTicketDescriptor);
     }
+
+    // // Public only for evaluating costs
+    // function _setVirtualSwagBag(
+    //     uint256 _virtualSwagBagTokenId,
+    //     string memory _tokenURI
+    // ) public {
+    //     eventTicketDescriptor.virtualSwagBag = _virtualSwagBagTokenId;
+    //     setTokenURI(_tokenURI);
+    //     emit StateChanged(eventTicketDescriptor);
+    // }
 }

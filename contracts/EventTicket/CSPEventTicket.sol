@@ -68,19 +68,19 @@ contract CSPEventTicket is SmartPolicy {
         return abi.decode(_payload[4:], (address, address, uint256));
     }
 
-    // Condition 1
-    function _isExtraServiceAuthorizedUser(
-        address _user
-    ) private pure returns (bool) {
-        // creator    - 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
-        // buyer - 0x70997970C51812dc3A010C7d01b50e0d17dc79C8
-        // tailor - 0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC
-        return
-            // _user == 0x70997970C51812dc3A010C7d01b50e0d17dc79C8 || //test account1
-            _user == 0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC; //test account2
-        // _user == 0x7DE5260b6964bAE3678f3C7a8c45628af2CeAc28 || // sepolia 2
-        // _user == 0x901D7C8d516a5c97bFeE31a781A1101D10BBc8e9; // sepolia 3
-    }
+    // // Condition 1
+    // function _isExtraServiceAuthorizedUser(
+    //     address _user
+    // ) private pure returns (bool) {
+    //     // creator    - 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
+    //     // buyer - 0x70997970C51812dc3A010C7d01b50e0d17dc79C8
+    //     // tailor - 0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC
+    //     return
+    //         // _user == 0x70997970C51812dc3A010C7d01b50e0d17dc79C8 || //test account1
+    //         _user == 0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC; //test account2
+    //     // _user == 0x7DE5260b6964bAE3678f3C7a8c45628af2CeAc28 || // sepolia 2
+    //     // _user == 0x901D7C8d516a5c97bFeE31a781A1101D10BBc8e9; // sepolia 3
+    // }
 
     // Condition 1
     function _isOrganizerAuthorizedUser(
@@ -121,9 +121,9 @@ contract CSPEventTicket is SmartPolicy {
             return _calcInstancesCount(_resource, to) <= 3;
         }
 
-        if (_signature == ACT_SET_BIKE_TRANSPORT) {
-            return _isExtraServiceAuthorizedUser(_subject);
-        }
+        // if (_signature == ACT_SET_BIKE_TRANSPORT) {
+        //     return _isExtraServiceAuthorizedUser(_subject);
+        // }
 
         if (_signature == ACT_SET_BACKSTAGE_ACCESS) {
             address owner = EventTicketMutableAsset(_resource).getHolder();

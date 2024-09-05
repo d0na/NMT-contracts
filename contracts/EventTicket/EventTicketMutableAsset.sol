@@ -105,10 +105,7 @@ contract EventTicketMutableAsset is MutableAsset {
     }
 
     // // Public only for evaluating costs
-    // function _setSeat(
-    //     uint256 _seatNumber,
-    //     string memory _tokenURI
-    // ) public {
+    // function _setSeat(uint256 _seatNumber, string memory _tokenURI) public {
     //     eventTicketDescriptor.seatNumber = _seatNumber;
     //     setTokenURI(_tokenURI);
     //     emit StateChanged(eventTicketDescriptor);

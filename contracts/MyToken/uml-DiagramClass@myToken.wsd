@@ -188,15 +188,15 @@ MyTokenMutableAsset  -- "0..1"  HolderSmartPolicy : has
 
 MyTokenMutableAsset --[#DarkGoldenRod]|> MutableAsset : extends
 
-struct  MyTokenDescriptor {
+struct  MyTokenAssetDescriptor {
     address attrAddress;
     uint256 attrUint
     bool attrBool;
 }
 
 
-MyTokenDescriptor .. MyTokenMutableAsset 
-note on link: MyTokenDescriptor definition
+MyTokenAssetDescriptor .. MyTokenMutableAsset 
+note on link: MyTokenAssetDescriptor \n definition
 
 class MyTokenMutableAsset #LightGreen {
     ' -- inheritance --
@@ -205,7 +205,7 @@ class MyTokenMutableAsset #LightGreen {
     ' -- usingFor --
 
     ' -- vars --
-	+[[MyTokenDescriptor]] myTokenDescriptor
+	+[[MyTokenAssetDescriptor]] myTokenAssetDescriptor
 
     ' -- methods --
 	+**__constructor__**()

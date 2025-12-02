@@ -66,7 +66,7 @@ module.exports = {
     currencyDisplayPrecision: 4,
     reportFormat: "markdown",
     // outputFile:  getDynamicOutputFile()+'.md' ,
-    outputFile:  'gas-report-'+argv._[1].split('/').pop().split('.')[0]+'.md' ,
+    outputFile:  'gas-report-'+(argv._[1] ? argv._[1].split('/').pop().split('.')[0] : 'default')+'.md' ,
     forceTerminalOutput: true,
     forceTerminalOutputFormat: "terminal",
     // outputJSONFile	:  getDynamicOutputFile()+'.json', 

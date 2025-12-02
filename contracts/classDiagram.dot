@@ -1,0 +1,12 @@
+
+digraph UmlClassDiagram {
+rankdir=BT
+arrowhead=open
+bgcolor="white"
+edge [color="black"]
+node [shape=record, style=filled, color="black", fillcolor="gray95", fontcolor="black"]
+subgraph  graph_0 {
+label="base"
+0 [label="{\<\<Abstract\>\>\nMutableAsset\nbase/MutableAsset.sol| Public:\l\ \ \ nmt: address\l\ \ \ linked: address\l\ \ \ tokenURI: string\l\ \ \ holderSmartPolicy: address\l\ \ \ creatorSmartPolicy: address\l| Internal:\l\ \ \ \ setTokenURI(_tokenUri: string)\lPublic:\l\ \ \ \ \<\<modifier\>\> evaluatedByHolder(_subject: address, _action: bytes, _resource: address)\l\ \ \ \ \<\<modifier\>\> evaluatedByCreator(_subject: address, _action: bytes, _resource: address)\l\ \ \ \ \<\<modifier\>\> evaluatedBySmartPolicies(_subject: address, _action: bytes, _resource: address)\l\ \ \ \ \<\<modifier\>\> onlyHolder()\l\ \ \ \ \<\<modifier\>\> onlyNMT()\l\ \ \ \ constructor(_nmt: address, _creatorSmartPolicy: address, _holderSmartPolicy: address)\l\ \ \ \ getHolder(): address\l\ \ \ \ setLinked(linkedNmt: address) \<\<evaluatedBySmartPolicies\>\>\l\ \ \ \ setHolderSmartPolicy(_holderSmartPolicy: address) \<\<onlyHolder\>\>\l\ \ \ \ setCreatorSmartPolicy(_creatorSmartPolicy: address) \<\<evaluatedBySmartPolicies\>\>\l\ \ \ \ transferFrom(from: address, to: address): bool \<\<onlyNMT, evaluatedByCreator\>\>\l\ \ \ \ payableTransferFrom(from: address, to: address, amount: uint256): bool \<\<onlyNMT, evaluatedByCreator\>\>\l}"]
+}
+}

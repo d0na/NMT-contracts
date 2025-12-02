@@ -1,0 +1,76 @@
+@startuml
+hide footbox
+title NMT Lifecycle
+
+actor Master as M
+actor Creator as C
+actor Holder as H
+actor 3DParty as P
+participant "Smart Contract (NMT)" as NMT
+participant "Mutable Asset" as MA
+participant "Master Smart Policy" as MSP
+participant "Creator Smart Policy" as CSP
+participant "Holder Smart Policy" as HSP
+
+== NMT deploy ==
+autonumber 1.1
+M -> NMT: deploy(masterSP) 
+
+== NMT mint, Mutable Asset creation ==
+autonumber 2.1
+
+C -> NMT: mint(creator,creatorSP) 
+activate NMT
+NMT -> MSP: evaluate(creator,"mint(creator,creatorSP)")
+activate MSP
+MSP -[#008000]-> NMT: allow
+deactivate MSP
+NMT -> MA: create new mutable asset
+NMT --> C: tokenId
+deactivate NMT
+
+== Mutable Asset transferFrom ==
+autonumber 3.1
+
+C -> NMT: transferFrom(tokenId,creator,holder)
+activate NMT
+NMT -> MA: evaluate(creator,"transferFrom(tokenId,creator,holder)")
+MA -> CSP: evaluate(creator,"transferFrom(tokenId,creator,holder)")
+activate CSP
+CSP -[#green]-> NMT: allow
+deactivate CSP
+deactivate NMT
+== Mutable Asset update "success" ==
+autonumber 4.1
+
+H -> MA: set Holder Smart Policy
+P -> MA: setAttribute(value)
+activate MA
+alt#Gold #LightBlue Creator Smart Policy successful case 
+MA -> CSP: evaluate(3DParty,"setAttribute(value)")
+activate CSP
+CSP -[#green]-> MA: allow
+deactivate CSP
+    alt#Gold #C5E8CC Holder Smart Policy successful case 
+        MA -> HSP: evaluate(3DParty,"setAttribute(value)")
+        activate HSP
+        HSP -[#green]-> MA: allow
+        deactivate HSP
+        MA -> MA: update attribute descriptor value and emit
+    else #Pink Failure
+        MA -> HSP: evaluate(3DParty,"setAttribute(value)")
+        activate HSP
+        HSP -[#red]-> MA: deny
+        deactivate HSP
+        MA --> P: notify failure
+    end
+else #Pink Failure
+    MA -> CSP: evaluate(3DParty,"setAttribute(value)")
+    activate CSP
+    CSP -[#red]-> MA: deny
+    deactivate CSP
+    MA --> P: notify failure
+    deactivate MA
+end
+
+@enduml

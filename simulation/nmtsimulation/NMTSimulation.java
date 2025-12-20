@@ -3,6 +3,7 @@ package nmtsimulation;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.File;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Random;
@@ -27,6 +28,87 @@ public class NMTSimulation {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+
+        // ============================================================
+        // Ticket use case simulations (Event Ticket NMTs)
+        // ============================================================
+        int NUMRUNS = 10;              // number of runs, same as NMT
+        int MAXTIME = 604800;          // 7 days in seconds (ticket lifecycle window)
+        int NUMAGGR = 300;             // aggregation step in seconds (5 minutes)
+        String dir = "./ticketSim/";   // output directory for ticket simulations
+
+        // Create output directory if it does not exist
+        File outDir = new File(dir);
+        if (!outDir.exists()) {
+            boolean created = outDir.mkdirs();
+            if (!created) {
+                System.err.println("WARNING: Could not create output directory: " + dir);
+            }
+        }
+
+        // Ensure the directory path exists before running, or adjust as needed.
+
+        // Scenario 1: stable interest (uniform distributions)
+        String outFile = dir + "ticketStable_t" + MAXTIME + "a" + NUMAGGR + ".tsv";
+        SimParams simToRun = new TicketSimParamsStable();
+        runSimSpaceOptimisedAggregated(simToRun, NUMRUNS, MAXTIME, outFile, NUMAGGR);
+        System.out.println("*** DONE Ticket STABLE (" + NUMAGGR + " sec) " + (MAXTIME / 86400) + " days ***");
+
+        // Scenario 2 and 3 templates (enable when TicketSimParamsHype/Short are implemented)
+        /*
+        // Scenario 2: traditional hype cycle (normal distributions)
+        outFile = dir + "ticketHype_t" + MAXTIME + "a" + NUMAGGR + ".tsv";
+        simToRun = new TicketSimParamsHype();
+        runSimSpaceOptimisedAggregated(simToRun, NUMRUNS, MAXTIME, outFile, NUMAGGR);
+        System.out.println("*** DONE Ticket HYPE (" + NUMAGGR + " sec) " + (MAXTIME / 86400) + " days ***");
+
+        // Scenario 3: short attention span (exp + lognormal distributions)
+        outFile = dir + "ticketShort_t" + MAXTIME + "a" + NUMAGGR + ".tsv";
+        simToRun = new TicketSimParamsShort();
+        runSimSpaceOptimisedAggregated(simToRun, NUMRUNS, MAXTIME, outFile, NUMAGGR);
+        System.out.println("*** DONE Ticket SHORT (" + NUMAGGR + " sec) " + (MAXTIME / 86400) + " days ***");
+        */
+
+        // ============================================================
+        // BPMN use case simulations (ChorNMT: Choreography + Participants)
+        // ============================================================
+        NUMRUNS = 10;              // numero di run, allineato a Ticket/NMT
+        MAXTIME = 604800;          // 7 giorni in secondi
+        NUMAGGR = 300;             // step di aggregazione (5 minuti)
+        dir = "./chorSim/";        // directory di output per le simulazioni ChorNMT
+
+        // Create output directory if it does not exist
+        File chorDir = new File(dir);
+        if (!chorDir.exists()) {
+            boolean chorCreated = chorDir.mkdirs();
+            if (!chorCreated) {
+                System.err.println("WARNING: Could not create output directory: " + dir);
+            }
+        }
+
+        // Scenario 1: stable interest (uniform distributions)
+        outFile = dir + "chorStable_t" + MAXTIME + "a" + NUMAGGR + ".tsv";
+        simToRun = new ChorSimParamsStable();
+        runSimSpaceOptimisedAggregated(simToRun, NUMRUNS, MAXTIME, outFile, NUMAGGR);
+        System.out.println("*** DONE ChorNMT STABLE (" + NUMAGGR + " sec) " + (MAXTIME / 86400) + " days ***");
+
+        // Scenario 2 e 3 (da abilitare quando saranno disponibili ChorSimParamsHype/Short)
+        /*
+        // Scenario 2: traditional hype cycle (normal distributions)
+        outFile = dir + "chorHype_t" + MAXTIME + "a" + NUMAGGR + ".tsv";
+        simToRun = new ChorSimParamsHype();
+        runSimSpaceOptimisedAggregated(simToRun, NUMRUNS, MAXTIME, outFile, NUMAGGR);
+        System.out.println("*** DONE ChorNMT HYPE (" + NUMAGGR + " sec) " + (MAXTIME / 86400) + " days ***");
+
+        // Scenario 3: short attention span (exp + lognormal distributions)
+        outFile = dir + "chorShort_t" + MAXTIME + "a" + NUMAGGR + ".tsv";
+        simToRun = new ChorSimParamsShort();
+        runSimSpaceOptimisedAggregated(simToRun, NUMRUNS, MAXTIME, outFile, NUMAGGR);
+        System.out.println("*** DONE ChorNMT SHORT (" + NUMAGGR + " sec) " + (MAXTIME / 86400) + " days ***");
+        */
+
+
+/* NMT JACKET TEST SIMULATIONS
         
         int NUMRUNS = 10;//100;
         int MAXTIME = 1209600;//86400; one day//2592000; one month//864000; ten days//604800 seven days  //  1209600 two weeks
@@ -46,7 +128,7 @@ public class NMTSimulation {
         simToRun = new SimParams6Scaled();       
         runSimSpaceOptimisedAggregated(simToRun, NUMRUNS, MAXTIME, outFile, NUMAGGR);
         System.out.println("*** DONE SIM6Scaled AGGR ("+NUMAGGR+" seconds) "+(MAXTIME/86400)+" days ***"); 
-        
+/*        
         
         /*MAXTIME = 1209600;
         outFile = dir+"simResultsTest5Scaledt"+MAXTIME+"a"+NUMAGGR+".tsv";
@@ -142,8 +224,62 @@ public class NMTSimulation {
         //printProbTesting();
         
     }
+
+public class TicketSimParamsStable extends SimParams {
+
+    public TicketSimParamsStable() {
+        super();
+
+        name = "TicketStable";
+
+        // esempio: probabilità costanti tipo quelle di NMT Simulation 1
+        newCreatorCreationDist = uniform(0.0001);
+        creatorPolicyUpdateDist = uniform(0.0001);
+        newAssetsCreationDist = uniform(0.001);
+        ownerPolicyUpdateDist = uniform(0.0001);
+        attributeUpdateDist = uniform(0.001);
+        assetTransferDist = uniform(0.001);
+
+        // costi di gas specifici per lo smart contract Ticket (valori derivati dalla tesi)
+        C_NMTDeployment = 1292537;   // deploy+mint iniziale del Ticket NMT
+        C_creatorPolicyUpdate = 496366;  // deploy/aggiornamento CreatorSmartPolicy
+        C_newAssetsCreation = 1292537;   // creazione nuovo Ticket (mint + policy)
+        C_ownerPolicyUpdate = 318518;    // deploy/aggiornamento HolderSmartPolicy
+        C_attributeUpdate = 100596;      // aggiornamento attributo (es. setValidationDate + policy eval)
+        C_transfer = 95997;              // transferFrom() sul Ticket NMT
+    }
+}
+
+public class ChorSimParamsStable extends SimParams {
+
+    public ChorSimParamsStable() {
+        super();
+
+        name = "ChorStable";
+
+        // Stesso scenario "stable interest" del Ticket:
+        // tutti gli eventi hanno probabilità uniforme nel tempo.
+        newCreatorCreationDist   = uniform(0.0001);  // nuovi partecipanti / coreografie
+        creatorPolicyUpdateDist  = uniform(0.0001);  // aggiornamento policy lato creatore
+        newAssetsCreationDist    = uniform(0.001);   // nuove istanze (participant/choreography asset)
+        ownerPolicyUpdateDist    = uniform(0.0001);  // aggiornamento policy lato holder
+        attributeUpdateDist      = uniform(0.001);   // aggiornamento attributi BPMN
+        assetTransferDist        = uniform(0.001);   // trasferimento di ruoli / istanze
+
+        // Costi gas inizializzati con ordini di grandezza simili al caso Ticket.
+        // Potranno essere raffinati con i valori precisi del caso ChorNMT.
+        C_NMTDeployment       = 1_300_000;  // costo setup iniziale NMT per coreografia/partecipanti
+        C_creatorPolicyUpdate = 500_000;    // costo di deploy/update CreatorSmartPolicy (partner/coreografia)
+        C_newAssetsCreation   = 1_300_000;  // nuova istanza mutable (participant/choreography asset)
+        C_ownerPolicyUpdate   = 320_000;    // HolderSmartPolicy per il ruolo/partecipante
+        C_attributeUpdate     = 100_000;    // aggiornamento attributi di stato/variabili di processo
+        C_transfer            = 100_000;    // trasferimento del ruolo/istanza ad altro partner
+    }
+}
+
+
     public static void printProbTesting(){
-        String outFileHead = "/home/brodo/Universita/Donini/simResults/simProb";
+        String outFileHead = "../simResults/simProb";
         String outFileTail = ".tsv";
         int maxTime = 3600;//2 hours
         printProb(new ExponentialProbDistr(0.0001, 0.01), maxTime, outFileHead+"exp1"+outFileTail);
